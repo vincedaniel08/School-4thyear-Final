@@ -10,9 +10,9 @@ import {
   InputAdornment,
   IconButton,
   Divider,
-  AppBar,
-  Toolbar,
-  Button,
+  // AppBar,
+  // Toolbar,
+  // Button,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import style from "../styles/Login";
@@ -23,13 +23,13 @@ import GoogleIcon from "@mui/icons-material/Google";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import { updateDoc, doc } from "firebase/firestore";
-import { auth,db } from "../utils/firebase";
+// import { updateDoc, doc } from "firebase/firestore";
+import { auth } from "../utils/firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useSelector } from "react-redux";
+// /import { useSelector } from "react-redux";
 
 export default function Login() {
-  const userData = useSelector((state) => state.user);
+  //const userData = useSelector((state) => state.user);
   const history = useHistory();
   const provider = new GoogleAuthProvider();
 

@@ -10,9 +10,9 @@ import {
   InputAdornment,
   IconButton,
   Divider,
-  AppBar,
-  Toolbar,
-  Button,
+  // AppBar,
+  // Toolbar,
+  // Button,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import style from "../styles/Register";
@@ -75,12 +75,12 @@ export default function Register() {
     history.push("/login");
   }
 
-  const buttonShop = () => {
-    history.push('/shop');
-  };
-  const buttonHome = () => {
-    history.push("/");
-  };
+  // const buttonShop = () => {
+  //   history.push('/shop');
+  // };
+  // const buttonHome = () => {
+  //   history.push("/");
+  // };
 
   function buttonGoogle() {
     

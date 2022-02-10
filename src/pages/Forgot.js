@@ -25,12 +25,12 @@ export default function Forgot() {
 
   const [loading, setLoading] = React.useState(false);
 
-  const buttonShop = () => {
-    history.push('/shop');
-  };
-  const buttonHome = () => {
-    history.push("/");
-  };
+  // const buttonShop = () => {
+  //   history.push('/shop');
+  // };
+  // const buttonHome = () => {
+  //   history.push("/");
+  // };
 
  
   const buttonSignup = () => {

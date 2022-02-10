@@ -26,7 +26,7 @@ import * as tl from "../language/tl";
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme, setLang } from "../redux/actions/uiAction";
-
+import { getAuth, signOut } from "firebase/auth";
 const Navbar = () => {
   const ui = useSelector((state) => state.ui);
   const [language] = useState(ui.lang === "en" ? en : tl);
@@ -44,6 +44,18 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
+  const buttonLogout = () => {
+    const auth = getAuth();
+    signOut(auth)
+          .then(() => {
+            // Sign-out successful.
+           // dispatch(setCart([]))
+            
+            
+           
+          })
+         
+  }
   return (
     <Box>
       {/*Navbar start*/}
@@ -87,11 +99,11 @@ const Navbar = () => {
             </Link>
 
             <Link
-              to="/"
-              component={RLink}
+              // to="/"
+               component={RLink}
               style={{ textDecoration: "none", margin: "10px" }}
             >
-              <Typography sx={style.linkText1}>
+              <Typography sx={style.linkText1}  onClick={buttonLogout}>
                 {language.HEADER_Logout}
               </Typography>
             </Link>
@@ -167,12 +179,12 @@ const Navbar = () => {
 
               <MenuItem onClick={handleClose}>
               <Link
-              to="/"
-              component={RLink}
+              //to="/"
+              //component={RLink}
               style={{ textDecoration: "none", margin: "10px" }}
               
             >
-              <Typography sx={style.linkText} color="textPrimary" >
+              <Typography sx={style.linkText} color="textPrimary"  onClick={buttonLogout}>
                 {language.HEADER_Logout}
               </Typography>
             </Link>
