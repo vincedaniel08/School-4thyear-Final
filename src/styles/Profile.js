@@ -222,6 +222,7 @@ const style = {
     },
 
     modalStyle: {
+        backgroundColor: (theme) => theme.palette.background.default,
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -232,7 +233,7 @@ const style = {
             md: '80%',
             lg: '50%',
         },
-        bgcolor: '#fff',
+        
         boxShadow: 24,
         padding: '10px',
     },

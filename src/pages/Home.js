@@ -111,9 +111,9 @@ const Home = () => {
 
   const buttonPost = () => {
     if (caption === "") {
-      alert("walang caption");
+      //alert("walang caption");
 
-      alert("my image at caption");
+     // alert("my image at caption");
       auth.onAuthStateChanged((user) => {
         const storageRef = ref(
           storage,
@@ -159,7 +159,7 @@ const Home = () => {
         );
       });
     } else if (userImg === null) {
-      alert("walang image");
+     // alert("walang image");
       auth.onAuthStateChanged(async (user) => {
        await addDoc(collection(db, "Post"), {
           UserUid: user.uid,
@@ -175,7 +175,7 @@ const Home = () => {
       setCaption("");
       setShow(false);
     } else {
-      alert("my image at caption");
+     // alert("my image at caption");
       auth.onAuthStateChanged((user) => {
         const storageRef = ref(
           storage,
@@ -259,6 +259,8 @@ const Home = () => {
                 UserUid: user.uid,
                 UserEmail: user.email,
                 ProfilePicName: date.toLocaleTimeString() + userImg.name,
+                CoverPicName: "",
+                CoverImg: "",
                 Name: name,
                 Address: address,
                 ProfileImg: url,

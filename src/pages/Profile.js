@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import style from "../styles/Profile";
 import { Helmet } from "react-helmet";
 import {
@@ -16,6 +16,7 @@ import {
   Modal,
 } from "@mui/material";
 
+import { LoadingButton } from "@mui/lab";
 import Navbar from "../components/Navbar";
 
 import PlaceIcon from "@mui/icons-material/Place";
@@ -30,19 +31,56 @@ import post1 from "../assets/images/post1.jpeg";
 //import bryce from "../assets/images/bryce.jpg";
 import { useHistory } from "react-router-dom";
 //backend
-import { db, auth } from "../utils/firebase";
+import { db, auth, storage } from "../utils/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, collection, addDoc } from "firebase/firestore";
+import { doc, getDoc, collection, addDoc, updateDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Profile = () => {
   const userData = useSelector((state) => state.user);
   const history = useHistory();
   const date = new Date();
   const [comment, setComment] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [work, setWork] = React.useState("");
+  const [address, setAddress] = React.useState("");
+
+  const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setUserImg(null);
+  };
+
+  //images
+  const [userImg, setUserImg] = useState(null);
+  const [userProfileImg, setUserProfileImg] = useState(null);
+  const [, setError] = useState("");
+  const types = ["image/png", "image/jpeg"]; // image types
+
+  const productImgHandler = (e) => {
+    let selectedFile = e.target.files[0];
+    if (selectedFile && types.includes(selectedFile.type)) {
+      setUserImg(selectedFile);
+      setError("");
+    } else {
+      setUserImg(null);
+      setError("Please select a valid image type (jpg or png)");
+    }
+  };
+
+  const productImgHandlerProfile = (e) => {
+    let selectedFile = e.target.files[0];
+    if (selectedFile && types.includes(selectedFile.type)) {
+      setUserProfileImg(selectedFile);
+      setError("");
+    } else {
+      setUserProfileImg(null);
+      setError("Please select a valid image type (jpg or png)");
+    }
+  };
 
   const [openPass, setOpenPass] = React.useState(false);
   const handleOpenPass = () => setOpenPass(true);
@@ -51,6 +89,16 @@ const Profile = () => {
   const HandleChangeComment = (e) => {
     setComment(e.target.value);
   };
+  const HandleChangeName = (e) => {
+    setName(e.target.value);
+  };
+  const HandleChangeWork = (e) => {
+    setWork(e.target.value);
+  };
+  const HandleChangeAddress = (e) => {
+    setAddress(e.target.value);
+  };
+
   const buttonComment = (post) => {
     auth.onAuthStateChanged(async (user) => {
       await addDoc(collection(db, "Comment"), {
@@ -66,19 +114,47 @@ const Profile = () => {
     setComment("");
   };
   const buttonUpdateProfile = () => {
-    // auth.onAuthStateChanged(async (user) => {
-    //   const docRef = await addDoc(collection(db, "Comment"), {
-    //     UserUid: user.uid,
-    //     Comment: comment,
-    //     PostUid: post.id,
-    //     PostUserUid: post.UserUid,
-    //     CreatedDate:
-    //       date.toLocaleDateString() + " " + date.toLocaleTimeString(),
-    //   });
-    // });
-    // alert("Your Comment was Succesfully Posted on the Board!");
-    // setComment("");
+    //userData.users.map((user) => user.Email)
+    auth.onAuthStateChanged(async (user) => {
+      const userRef = doc(db, "User", user.uid);
+      if (name !== "" && work !== "" && address !== "") {
+        await updateDoc(userRef, {
+          Name: name,
+          Work: work,
+          Address: address,
+        });
+        alert("Your Profile was Succesfully Updated!");
+      } else if (name !== "" && work !== "") {
+        await updateDoc(userRef, {
+          Name: name,
+          Work: work,
+        });
+        alert("Your Profile was Succesfully Updated!");
+      } else if (name !== "" && address !== "") {
+        await updateDoc(userRef, {
+          Name: name,
+          Address: address,
+        });
+        alert("Your Profile was Succesfully Updated!");
+      } else if (name !== "") {
+        await updateDoc(userRef, {
+          Name: name,
+        });
+        alert("Your Profile was Succesfully Updated!");
+      } else if (work !== "") {
+        await updateDoc(userRef, {
+          Work: work,
+        });
+        alert("Your Profile was Succesfully Updated!");
+      } else if (address !== "") {
+        await updateDoc(userRef, {
+          Address: address,
+        });
+        alert("Your Profile was Succesfully Updated!");
+      }
+    });
   };
+
   useEffect(() => {
     const getData = () => {
       onAuthStateChanged(auth, async (user) => {
@@ -87,6 +163,103 @@ const Profile = () => {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             console.log("data exist");
+
+            if (userImg !== null) {
+              setLoading(true);
+              const storageRef = ref(
+                storage,
+                `users-images/${new Date().toLocaleTimeString() + userImg.name}`
+              );
+              const uploadTask = uploadBytesResumable(storageRef, userImg, [
+                "image/png",
+                "image/jpeg",
+              ]);
+
+              // const uploadTask = ref(storage, `product-images/${productImg.name}`).put(productImg);
+              uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                  const progress =
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                  console.log(progress);
+                },
+                (err) => setError(err.message),
+                () => {
+                  //  const UserDocRef = doc(collection(db, "Products"));
+                  var UserDocRef = doc(db, "User", user.uid);
+                  getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    updateDoc(UserDocRef, {
+                      CoverPicName:
+                        new Date().toLocaleTimeString() + userImg.name,
+                      CoverImg: url,
+                      // UpdateDate:
+                      //   date.toLocaleDateString() + " " + date.toLocaleTimeString(),
+                    })
+                      .then(() => {
+                        setUserImg(null);
+                        setLoading(false);
+                        setError("");
+                        document.getElementById("file").value = "";
+                        alert(
+                          " Your Cover Photo has been successfully updated"
+                        );
+
+                        setTimeout(() => {}, 3000);
+                      })
+                      .catch((err) => setError(err.message));
+                  });
+                }
+              );
+            } else if (userProfileImg !== null) {
+              setLoading(true);
+              const storageRef = ref(
+                storage,
+                `users-images/${
+                  new Date().toLocaleTimeString() + userProfileImg.name
+                }`
+              );
+              const uploadTask = uploadBytesResumable(
+                storageRef,
+                userProfileImg,
+                ["image/png", "image/jpeg"]
+              );
+
+              // const uploadTask = ref(storage, `product-images/${productImg.name}`).put(productImg);
+              uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                  const progress =
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                  console.log(progress);
+                },
+                (err) => setError(err.message),
+                () => {
+                  //  const UserDocRef = doc(collection(db, "Products"));
+                  var UserDocRef = doc(db, "User", user.uid);
+                  getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    updateDoc(UserDocRef, {
+                      ProfilePicName:
+                        new Date().toLocaleTimeString() + userProfileImg.name,
+                      ProfileImg: url,
+                      // UpdateDate:
+                      //   date.toLocaleDateString() + " " + date.toLocaleTimeString(),
+                    })
+                      .then(() => {
+                        setUserProfileImg(null);
+                        setLoading(false);
+                        setError("");
+                        document.getElementById("file").value = "";
+                        alert(
+                          " Your Profile Photo has been successfully updated"
+                        );
+
+                        setTimeout(() => {}, 3000);
+                      })
+                      .catch((err) => setError(err.message));
+                  });
+                }
+              );
+            }
           } else {
             history.push("/");
             console.log("not exist");
@@ -96,7 +269,8 @@ const Profile = () => {
       });
     };
     return getData();
-  }, [history]);
+  }, [history, userImg, userProfileImg]);
+
   return (
     <Box sx={style.root}>
       <Helmet>
@@ -114,7 +288,7 @@ const Profile = () => {
           <Box>
             <img
               alt="cover"
-              src={post1}
+              src={userData.users.map((user) => user.CoverImg).toString() === "" ? post1 : userData.users.map((user) => user.CoverImg)}
               style={{
                 objectFit: "cover",
                 width: "100%",
@@ -347,14 +521,45 @@ const Profile = () => {
         ))}
 
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style.modalStyle}>
+        <Paper sx={style.modalStyle}>
           <Box sx={style.modalBoxButtonContainer}>
-            <Button variant="contained" sx={style.coverPhotoButton}>
-              Choose Cover Photo
-            </Button>
-            <Button variant="contained" sx={style.profilePictureButton}>
-              Choose Profile Picture
-            </Button>
+            <LoadingButton
+              variant="contained"
+              sx={style.coverPhotoButton}
+              loading={loading}
+            >
+              Cover Photo{" "}
+              {loading === true ? (
+                ""
+              ) : (
+                <input
+                  type="file"
+                  className="form-control"
+                  id="file"
+                  required
+                  onChange={productImgHandler}
+                />
+              )}
+            </LoadingButton>
+            <LoadingButton
+              variant="contained"
+              sx={style.profilePictureButton}
+              loading={loading}
+            >
+              Profile Picture{" "}
+              {loading === true ? (
+                ""
+              ) : (
+                <input
+                  type="file"
+                  className="form-control"
+                  id="file"
+                  required
+                  onChange={productImgHandlerProfile}
+                />
+              )}
+            
+            </LoadingButton>
           </Box>
           <Box sx={style.textAndBoxContainer}>
             <Box sx={style.textAndBox}>
@@ -362,6 +567,7 @@ const Profile = () => {
               <TextField
                 sx={style.infoText}
                 defaultValue={userData.users.map((user) => user.Name)}
+                onChange={HandleChangeName}
               />
             </Box>
 
@@ -370,6 +576,7 @@ const Profile = () => {
               <TextField
                 sx={style.infoText}
                 defaultValue={userData.users.map((user) => user.Work)}
+                onChange={HandleChangeWork}
               />
             </Box>
 
@@ -378,6 +585,7 @@ const Profile = () => {
               <TextField
                 sx={style.infoText}
                 defaultValue={userData.users.map((user) => user.Address)}
+                onChange={HandleChangeAddress}
               />
             </Box>
 
@@ -407,7 +615,7 @@ const Profile = () => {
               </Button>
             </Box>
           </Box>
-        </Box>
+        </Paper>
       </Modal>
 
       <Modal open={openPass} onClose={handleClosePass}>

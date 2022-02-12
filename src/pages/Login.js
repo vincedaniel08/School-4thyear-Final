@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 import {
   Box,
   Paper,
@@ -43,9 +43,8 @@ export default function Login() {
   const [loading, setLoading] = React.useState(false);
 
   const buttonForgot = () => {
-    history.push('/forgot');
+    history.push("/forgot");
   };
-
 
   function buttonGoogle() {
     setLoading(true);
@@ -99,16 +98,12 @@ export default function Login() {
     setLoading(true);
 
     signInWithEmailAndPassword(auth, payload.email, payload.password)
-      .then(async(userCredential) => {
+      .then(async (userCredential) => {
         // Signed in
         const user = userCredential.user;
         const emailVerified = user.emailVerified;
         if (emailVerified === true) {
           //history.push("/login");
-     
-        
-          
-          
         } else {
           auth.signOut();
           alert("Your Email is not verified");
@@ -146,14 +141,13 @@ export default function Login() {
           </Button>
         </Toolbar>
       </AppBar> */}
-<Helmet>
-                <title>Volt - Login</title>
-                <meta
-                  name="Volt Login"
-                  content="Login Volt, Email, Password, Sign in with Google, Sign in with Facebook"
-                />
-                
-            </Helmet>
+      <Helmet>
+        <title>Volt - Login</title>
+        <meta
+          name="Volt Login"
+          content="Login Volt, Email, Password, Sign in with Google, Sign in with Facebook"
+        />
+      </Helmet>
 
       <Box sx={style.boxOne}>
         <Box sx={style.boxImage}></Box>
@@ -202,7 +196,7 @@ export default function Login() {
             size="large"
             loading={loading}
           >
-          Login
+            Login
           </LoadingButton>
           <Typography
             color="textPrimary"
@@ -211,7 +205,12 @@ export default function Login() {
             Contact Us
             <Typography
               color="textPrimary"
-              sx={{ fontSize: 12, textAlign: "left", mt: -2 ,cursor:'pointer'}}
+              sx={{
+                fontSize: 12,
+                textAlign: "left",
+                mt: -2,
+                cursor: "pointer",
+              }}
               onClick={buttonForgot}
             >
               Forgot Password
@@ -283,8 +282,7 @@ export default function Login() {
           backgroundColor: (theme) => theme.palette.primary.main,
         }}
       />
-      <Box sx={{height:{xs:"20px",lg:0}}}/>
-     
+      <Box sx={{ height: { xs: "20px", lg: 0 } }} />
     </Box>
   );
 }
