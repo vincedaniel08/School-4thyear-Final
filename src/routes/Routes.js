@@ -103,7 +103,7 @@ export default function Routes() {
             <Switch>
     
                 <Route path="/" exact>
-            <Redirect to="/homenouser" />
+            <Redirect to="/home" />
           </Route>
 
           <PrivateRoute
