@@ -1,23 +1,5 @@
 import * as actionTypes from "../types";
 
-export const setProduct = (product) => async (dispatch) => {
-  try {
-    
-    dispatch({ type: actionTypes.SET_PRODUCT, payload: product });
-  } catch (err) {
-    dispatch({ type: actionTypes.USER_ERROR, payload: err });
-  }
-};
-
-export const setCart = (cart) => async (dispatch) => {
-  try {
-    
-    dispatch({ type: actionTypes.SET_CART, payload: cart });
-  } catch (err) {
-    dispatch({ type: actionTypes.USER_ERROR, payload: err });
-  }
-};
-
 export const setUser = (user) => async (dispatch) => {
   try {
     
@@ -26,22 +8,40 @@ export const setUser = (user) => async (dispatch) => {
     dispatch({ type: actionTypes.USER_ERROR, payload: err });
   }
 };
-export const setChatUser = (chat) => async (dispatch) => {
+
+export const setPost = (post) => async (dispatch) => {
   try {
     
-    dispatch({ type: actionTypes.SET_CHAT_USER, payload: chat });
+    dispatch({ type: actionTypes.SET_POST, payload: post });
   } catch (err) {
     dispatch({ type: actionTypes.USER_ERROR, payload: err });
   }
 };
 
-export const findProduct = (product) => async (dispatch) => {
+export const setComment = (comment) => async (dispatch) => {
   try {
     
-    dispatch({ type: actionTypes.FIND_PRODUCT, payload: product });
+    dispatch({ type: actionTypes.SET_COMMENT, payload: comment });
   } catch (err) {
     dispatch({ type: actionTypes.USER_ERROR, payload: err });
   }
 };
 
+export const setAllUser = (alluser) => async (dispatch) => {
+  try {
+    
+    dispatch({ type: actionTypes.SET_ALL_USER_INFO, payload: alluser });
+  } catch (err) {
+    dispatch({ type: actionTypes.USER_ERROR, payload: err });
+  }
+};
+
+export const setLike = (like) => async (dispatch) => {
+  try {
+    
+    dispatch({ type: actionTypes.SET_LIKE, payload: like });
+  } catch (err) {
+    dispatch({ type: actionTypes.USER_ERROR, payload: err });
+  }
+};
 

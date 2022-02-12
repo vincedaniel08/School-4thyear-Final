@@ -262,6 +262,10 @@ const style = {
     },
 
     infoText: {
+        ".MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: "#000",
+            color: "#000"
+          },
         '& .MuiOutlinedInput-root': {
             '& fieldset': {
                 borderColor: '#1c7c99',

@@ -2,6 +2,20 @@ const style = {
     root:{
         backgroundColor: (theme) => theme.palette.background.default,
     },
+    modalBox: {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 320,
+        bgcolor: "background.paper",
+        border: "2px solid #1c7c99",
+        boxShadow: 24,
+        p: 3,
+       // overflow: "hidden",
+        display: "block",
+      },
+
     mainContainer: {
         width: {
             xs: '90%',

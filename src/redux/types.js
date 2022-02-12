@@ -8,11 +8,12 @@ export const SET_LANG = "SET_LANG";
 
 
 // USER REDUCER
+export const SET_ALL_USER_INFO = "SET_ALL_USER_INFO";
 export const SET_USER_INFO = "SET_USER_INFO";
-export const SET_PRODUCT = "SET_PRODUCT";
-export const FIND_PRODUCT = "FIND_PRODUCT";
-export const SET_CART = "SET_CART";
-export const SET_CHAT_USER = "SET_CHAT_USER";
+export const SET_POST = "SET_POST";
+export const SET_COMMENT = "SET_COMMENT";
+export const SET_LIKE = "SET_LIKE";
+
 
 
 

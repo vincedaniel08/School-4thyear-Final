@@ -1,12 +1,13 @@
 import * as actionTypes from "../types";
 
 const initialState ={
-    cart:[],
-    products:[],
+    allusers:[],
     users:[],
-    findProduct:[],
+    posts:[],
+    comments:[],
+    likes:[],
     error: null,
-    chatUser:[], 
+
     // cart:[{ProductId:"Agrishop"}],
     // products:[{ProductName:"...loading", ProductImg:"src"}],
     // users:[{id:"initial", ShopName:"....loading", ProfileImg:"...loading"}],
@@ -18,16 +19,10 @@ const initialState ={
 {
     switch(action.type) 
     {
-        case actionTypes.SET_PRODUCT: 
+        case actionTypes.SET_ALL_USER_INFO: 
         return{
             ...state,
-            products: action.payload,
-          
-        };
-        case actionTypes.SET_CART: 
-        return{
-            ...state,
-            cart: action.payload,
+            allusers: action.payload,
           
         };
         case actionTypes.SET_USER_INFO: 
@@ -36,24 +31,25 @@ const initialState ={
             users: action.payload,
           
         };
-        case actionTypes.SET_CHAT_USER: 
+        case actionTypes.SET_POST: 
         return{
             ...state,
-            chatUser: action.payload,
+            posts: action.payload,
           
         };
-        case actionTypes.FIND_PRODUCT:
-            return {
-              ...state,
-      
-              findProduct: state.products.find(
-                (item) =>
-                  item.id === action.payload
-              ),
-            
-            
-            };
-       
+        case actionTypes.SET_COMMENT: 
+        return{
+            ...state,
+            comments: action.payload,
+          
+        };
+        case actionTypes.SET_LIKE: 
+        return{
+            ...state,
+            likes: action.payload,
+          
+        };
+        
         case actionTypes.USER_ERROR: 
         return{
             ...state,

@@ -202,13 +202,13 @@ const Navbar = () => {
                 value={ui.lang}
                 label="Language"
                 onChange={(event) => dispatch(setLang(event.target.value))}
-                sx={{ fontSize: 15, color: "white",fontFamily: 'Poppins' }}
+                sx={{ fontSize: 15,fontFamily: 'Poppins' ,color:"textPrimary"}}
                 disableUnderline
               >
-                <MenuItem value={"en"} sx={{ fontSize: 10, fontFamily: 'Poppins'}}>
+                <MenuItem value={"en"} sx={{ fontSize: 10, fontFamily: 'Poppins',color:"textPrimary"}}>
                   English
                 </MenuItem>
-                <MenuItem value={"tl"} sx={{ fontSize: 10 }}>
+                <MenuItem value={"tl"} sx={{ fontSize: 10, }}>
                   Tagalog
                 </MenuItem>
               </Select>

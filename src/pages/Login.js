@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Helmet} from "react-helmet";
 import {
   Box,
   Paper,
@@ -145,6 +146,14 @@ export default function Login() {
           </Button>
         </Toolbar>
       </AppBar> */}
+<Helmet>
+                <title>Volt - Login</title>
+                <meta
+                  name="Volt Login"
+                  content="Login Volt, Email, Password, Sign in with Google, Sign in with Facebook"
+                />
+                
+            </Helmet>
 
       <Box sx={style.boxOne}>
         <Box sx={style.boxImage}></Box>

@@ -24,10 +24,10 @@ import Profile from "../pages/Profile";
 //backend
 import { onAuthStateChanged } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { auth } from "../utils/firebase";
+import { auth,db } from "../utils/firebase";
 import { getTheme, getLang, } from "../redux/actions/uiAction";
-// import { setCart, setProduct, setUser, setChatUser} from "../redux/actions/userAction";
-// import {  where,collection,query,onSnapshot,orderBy } from "firebase/firestore";
+ import { setUser, setComment, setPost, setAllUser, setLike } from "../redux/actions/userAction";
+ import {  where,collection,query,onSnapshot,orderBy } from "firebase/firestore";
 
 export default function Routes() {
     const dispatch = useDispatch();
@@ -49,9 +49,36 @@ export default function Routes() {
             // ...
             console.log(auth);
             setstate({ isAuth: true, isLoading: false });
-    
+     
+            const collectionRefAllUser = collection(db, "User");
+            const qAllUser = query(collectionRefAllUser, orderBy("CreatedDate"));
+           onSnapshot(qAllUser, (snapshot) =>
+           dispatch(setAllUser(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))) )
+            );
+
+            const collectionRef = collection(db, "User");
+            const q = query(collectionRef, where("UserUid", "==", user.uid));
+           onSnapshot(q, (snapshot) =>
+           dispatch(setUser(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))) )
+            );
+            const collectionRefPost = collection(db, "Post");
+            const qPost = query(collectionRefPost, orderBy("CreatedDate"));
+           onSnapshot(qPost, (snapshot) =>
+           dispatch(setPost(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))) )
+            );
       
-           
+            const collectionRefComment = collection(db, "Comment");
+            const qComment = query(collectionRefComment, orderBy("CreatedDate"));
+           onSnapshot(qComment, (snapshot) =>
+           dispatch(setComment(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))) )
+            );
+
+            const collectionRefLike = collection(db, "Like");
+            const qLike = query(collectionRefLike, orderBy("CreatedDate"));
+           onSnapshot(qLike, (snapshot) =>
+           dispatch(setLike(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))) )
+            );
+    
     
           } else {
             setstate({ isAuth: false, isLoading: false });

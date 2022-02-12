@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Paper,
-  TextField,
-  Typography,
-  Divider,
-
-} from "@mui/material";
+import { Helmet } from "react-helmet";
+import { Box, Paper, TextField, Typography, Divider } from "@mui/material";
 import style from "../styles/Forgot";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useHistory } from "react-router-dom";
@@ -14,14 +8,10 @@ import { useHistory } from "react-router-dom";
 
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
-
 export default function Forgot() {
-
   const history = useHistory();
 
-
   const [email, setEmail] = useState("");
-  
 
   const [loading, setLoading] = React.useState(false);
 
@@ -32,7 +22,6 @@ export default function Forgot() {
   //   history.push("/");
   // };
 
- 
   const buttonSignup = () => {
     history.push("/register");
   };
@@ -40,11 +29,9 @@ export default function Forgot() {
     history.push("/login");
   };
 
-  const handleChange =  (e) => {
+  const handleChange = (e) => {
     setEmail(e.target.value);
   };
-
-
 
   const buttonSend = () => {
     setLoading(true);
@@ -61,11 +48,10 @@ export default function Forgot() {
       .catch((error) => {
         //const errorCode = error.code;
         const errorMessage = error.message;
-        alert(errorMessage)
+        alert(errorMessage);
         setLoading(false);
         // ..
       });
-    
   };
 
   return (
@@ -90,6 +76,13 @@ export default function Forgot() {
           </Button>
         </Toolbar>
       </AppBar> */}
+      <Helmet>
+        <title>Volt - Forgot</title>
+        <meta
+          name="Volt Forgot"
+          content="Forgot Volt, Email, "
+        />
+      </Helmet>
 
       <Box sx={style.boxOne}>
         <Box sx={style.boxImage}></Box>
@@ -104,8 +97,6 @@ export default function Forgot() {
             value={email}
           />
 
-          
-
           <LoadingButton
             fullWidth
             sx={style.button}
@@ -114,16 +105,13 @@ export default function Forgot() {
             size="large"
             loading={loading}
           >
-             Send
+            Send
           </LoadingButton>
-         
 
           <Typography color="textPrimary">
             {" "}
             <Divider sx={{ mt: 2 }} />
           </Typography>
-
-         
 
           <Box
             sx={{
@@ -140,7 +128,7 @@ export default function Forgot() {
             >
               Login
             </Typography>
-            <Typography color="textPrimary" sx={{ fontSize: 12 ,ml:2}}>
+            <Typography color="textPrimary" sx={{ fontSize: 12, ml: 2 }}>
               New to Agrishop?
             </Typography>
             <Typography
@@ -160,8 +148,7 @@ export default function Forgot() {
           backgroundColor: (theme) => theme.palette.primary.main,
         }}
       />
-      <Box sx={{height:{xs:"20px",lg:0}}}/>
-     
+      <Box sx={{ height: { xs: "20px", lg: 0 } }} />
     </Box>
   );
 }
